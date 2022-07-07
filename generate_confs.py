@@ -51,7 +51,7 @@ def embed_func(mol, numConfs):
 
 
 still_frames = 10
-device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+device = torch.device('cpu')
 batch_size = args.batch_size
 
 if args.seed_confs:
