@@ -11,7 +11,7 @@ from rdkit import Chem, Geometry
 from rdkit.Chem import AllChem
 from utils.visualise import PDBFile
 
-device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+device = torch.device('cpu')
 still_frames = 10
 
 
