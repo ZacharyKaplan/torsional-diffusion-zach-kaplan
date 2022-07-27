@@ -1,5 +1,6 @@
 import numpy as np
 import torch
+import rdkit.Chem
 from rdkit.Chem import AllChem
 from scipy.stats import bootstrap
 
@@ -17,7 +18,11 @@ def divergence(model, data, data_gpu, method):
 
 
 def mmff_energy(mol):
-    energy = AllChem.MMFFGetMoleculeForceField(mol, AllChem.MMFFGetMoleculeProperties(mol, mmffVariant='MMFF94s')).CalcEnergy()
+    try:
+        energy = AllChem.MMFFGetMoleculeForceField(mol, AllChem.MMFFGetMoleculeProperties(mol, mmffVariant='MMFF94s')).CalcEnergy()
+    except:
+        print("returned none for FF")
+        print(rdkit.Chem.rdmolfiles.MolToSmiles(mol))
     return energy
 
 
