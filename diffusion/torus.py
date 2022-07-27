@@ -17,8 +17,8 @@ def grad(x, sigma, N=10):
     return p_
 
 
-X_MIN, X_N = 1e-5, 500  # relative to pi
-SIGMA_MIN, SIGMA_MAX, SIGMA_N = 3e-3, 2, 500  # relative to pi
+X_MIN, X_N = 1e-5, 5000  # relative to pi
+SIGMA_MIN, SIGMA_MAX, SIGMA_N = 3e-3, 2, 5000  # relative to pi
 
 x = 10 ** np.linspace(np.log10(X_MIN), 0, X_N + 1) * np.pi
 sigma = 10 ** np.linspace(np.log10(SIGMA_MIN), np.log10(SIGMA_MAX), SIGMA_N + 1) * np.pi
