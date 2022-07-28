@@ -135,7 +135,7 @@ def sample(conformers, model, sigma_max=np.pi, sigma_min=0.01 * np.pi, steps=20,
     return conformers
 
 
-def pyg_to_mol(mol, data, mmff=False, rmsd=True, copy=True):
+def pyg_to_mol(mol, data, mmff=True, rmsd=True, copy=True):
     if not mol.GetNumConformers():
         conformer = Chem.Conformer(mol.GetNumAtoms())
         mol.AddConformer(conformer)

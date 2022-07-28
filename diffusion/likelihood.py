@@ -21,8 +21,8 @@ def mmff_energy(mol):
     try:
         energy = AllChem.MMFFGetMoleculeForceField(mol, AllChem.MMFFGetMoleculeProperties(mol, mmffVariant='MMFF94s')).CalcEnergy()
     except:
-        print("returned none for FF")
-        print(rdkit.Chem.rdmolfiles.MolToSmiles(mol))
+        print(f"FF calculation failed for: {rdkit.Chem.rdmolfiles.MolToSmiles(mol)}")
+        energy = None
     return energy
 
 
@@ -122,6 +122,7 @@ def populate_likelihood(mol, data, water=False, xtb=None):
     mol.inertia_tensor = inertia_tensor(data.pos)
     mol.log_det_jac = log_det_jac(data)
     mol.euclidean_dlogp = mol.dlogp - 0.5 * np.log(np.abs(np.linalg.det(mol.inertia_tensor))) - mol.log_det_jac
+    if mmff_energy(mol) is None: return None
     mol.mmff_energy = mmff_energy(mol)
     if not xtb: return
     res = xtb_energy(mol, dipole=True, path_xtb=xtb)
