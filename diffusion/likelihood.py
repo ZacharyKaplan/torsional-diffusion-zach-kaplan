@@ -19,10 +19,12 @@ def divergence(model, data, data_gpu, method):
 
 def mmff_energy(mol):
     try:
-        energy = AllChem.MMFFGetMoleculeForceField(mol, AllChem.MMFFGetMoleculeProperties(mol, mmffVariant='MMFF94s')).CalcEnergy()
+        props = AllChem.MMFFGetMoleculeProperties(mol, mmffVariant='MMFF94s')
+        forcefield = AllChem.MMFFGetMoleculeForceField(mol, props)
+        energy = forcefield.CalcEnergy()
     except:
-        print(f"FF calculation failed for: {rdkit.Chem.rdmolfiles.MolToSmiles(mol)}")
-        energy = None
+        print("failed to generate force field")
+        energy = 99999999999999
     return energy
 
 
@@ -122,13 +124,5 @@ def populate_likelihood(mol, data, water=False, xtb=None):
     mol.inertia_tensor = inertia_tensor(data.pos)
     mol.log_det_jac = log_det_jac(data)
     mol.euclidean_dlogp = mol.dlogp - 0.5 * np.log(np.abs(np.linalg.det(mol.inertia_tensor))) - mol.log_det_jac
-    if mmff_energy(mol) is None: return None
     mol.mmff_energy = mmff_energy(mol)
-    if not xtb: return
-    res = xtb_energy(mol, dipole=True, path_xtb=xtb)
-    if res:
-        mol.xtb_energy, mol.xtb_dipole, mol.xtb_gap, mol.xtb_runtime = res['energy'], res['dipole'], res['gap'], res['runtime']
-    else:
-        mol.xtb_energy = None
-    if water:
-        mol.xtb_energy_water = xtb_energy(mol, water=True, path_xtb=xtb)['energy']
+    return 
