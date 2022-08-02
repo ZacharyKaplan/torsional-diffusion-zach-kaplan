@@ -1,4 +1,4 @@
-from utils.featurization import featurize_mol, featurize_mol_from_smiles
+from utils.featurization import featurize_mol_from_smiles
 from utils.torsion import *
 from diffusion.likelihood import *
 import torch, copy
@@ -7,7 +7,6 @@ from torch_geometric.data import Dataset
 from torch_geometric.loader import DataLoader
 from rdkit import Chem, Geometry
 from rdkit.Chem import AllChem
-from utils.visualise import PDBFile
 
 device = torch.device('cpu')
 
@@ -38,7 +37,7 @@ def embed_seeds(mol, data, n_confs, single_conf=False, smi=None, embed_func=None
             pass
         if len(mol.GetConformers())!=embed_num_confs:
             print(len(mol.GetConformers()), '!=', embed_num_confs)
-            return [], None
+            return None
     conformers = []
     for i in range(n_confs):
         data_conf = copy.deepcopy(data)
