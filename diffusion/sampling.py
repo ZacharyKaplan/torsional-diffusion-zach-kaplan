@@ -37,7 +37,7 @@ def embed_seeds(mol, data, n_confs, single_conf=False, smi=None, embed_func=None
             pass
         if len(mol.GetConformers())!=embed_num_confs:
             print(len(mol.GetConformers()), '!=', embed_num_confs)
-            return None
+            return []
     conformers = []
     for i in range(n_confs):
         data_conf = copy.deepcopy(data)
